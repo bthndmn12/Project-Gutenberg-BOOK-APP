@@ -18,8 +18,7 @@ export default function App (){
   const [searchInput , setSearchInput] = React.useState({search: ""})
   // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
   const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
-  //set state for is favorite
-  const [isFavorite , setIsFavorite ] = React.useState({favorite: false})
+  
 
 /////////////////API CALL /////////////
 
@@ -78,10 +77,13 @@ const inputChange = function(event){
     }
     })}
 
+// ALL IDS of fav movies to check if the movie is already added to fav list .   
+const favIds = favorites.map(item => item.id)
+
 // ADD MOVIE TO FAVORITES
 const addFavorites = function(data){
   // Create copy of current favorites array and add the curent book to it 
-    const favIds = favorites.map(item => item.id)
+    // const favIds = favorites.map(item => item.id)
     console.log(favIds);
     if(favIds.includes(data.id)){
       console.log("ALREADY IN FAV");
@@ -149,8 +151,8 @@ return (
     {booksData.map(data => 
     // BOOK CARD COMPONENT
     <div key={data.id}>
-    <button onClick={()=>addFavorites(data)}>Add Favorite</button>
-      
+    {/* Check if the current id is already in favIDs if its not dispaly button  */}
+    {!favIds.includes(data.id) && <button onClick={()=>addFavorites(data)}>Add Favorite</button>}
     <p >{data.title}</p> 
     <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
     <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
