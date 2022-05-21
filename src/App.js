@@ -9,20 +9,20 @@ export default function App (){
     //Set satate for navigation options next and prev page (from data.next and data.previous)
     const [bookNavigation , setBookNavigation] = React.useState([])
     //Set state for the books data 
-  const [booksData , setBooksData] = React.useState([])
+    const [booksData , setBooksData] = React.useState([])
     // Set state for the Loading msg 
-  const [isDataLoading , setIsDataLoading] = React.useState(true)
+    const [isDataLoading , setIsDataLoading] = React.useState(true)
     // Set state for fetchError
-  const [fetchError , setFetchError] = React.useState(null)
+    const [fetchError , setFetchError] = React.useState(null)
     // Set state for search Input and filter 
-  const [optionsInput , setOptionsInput] = React.useState({search: "" , language: ""})
-  // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
-  const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
+    const [optionsInput , setOptionsInput] = React.useState({search: "" , language: ""})
+    // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
+    const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
   
-console.log(optionsInput);
-console.log(currentUrl)
-console.log(booksData);
-console.log(bookNavigation);
+// console.log(optionsInput);
+// console.log(currentUrl)
+// console.log(booksData);
+// console.log(bookNavigation);
 
 
 
@@ -70,7 +70,10 @@ const prevPage = function(){
     // setCurrenPage(prevState => prevState -1)
     setCurrentUrl(bookNavigation.previous)
 }
-
+    //Function to back to Home 
+    const backHome = function(){
+      setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/`)
+    }
 
 //Function to get search value from input
 const inputChange = function(event){
@@ -83,17 +86,14 @@ const inputChange = function(event){
     })}
 
 // ALL IDS of fav movies to check if the movie is already added to fav list .   
-const favIds = favorites.map(item => item.id)
+  const favIds = favorites.map(item => item.id)
 
 // ADD MOVIE TO FAVORITES
-const addFavorites = function(data){
-  // Create copy of current favorites array and add the curent book to it 
+  const addFavorites = function(data){
+    // Create copy of current favorites array and add the curent book to it 
     // const favIds = favorites.map(item => item.id)
-    console.log(favIds);
     if(favIds.includes(data.id)){
-      console.log("ALREADY IN FAV");
-      
-      return
+    return
     }else{
      const newFavoriteList = [...favorites , data ] 
      setFavorites(newFavoriteList) 
@@ -112,10 +112,10 @@ const removeFavorites = function(data){
 }
 
 // SAVE AND REMOVE FAVORITES TO LOCAL STORAGE 
-// save and remove items to local storage everytime favorites array changes
-React.useEffect(()=>{
-localStorage.setItem("Favorites" , JSON.stringify(favorites))
-},[favorites])
+  // save and remove items to local storage everytime favorites array changes
+  React.useEffect(()=>{
+  localStorage.setItem("Favorites" , JSON.stringify(favorites))
+  },[favorites])
 
 
 //Function to search for the query 
@@ -192,9 +192,9 @@ return (
     )}
     
     <button onClick={prevPage}>BACK</button>
-    <p>Pages :{bookNavigation.count} </p>
+    <p>Books : {bookNavigation.count} </p>
     <button onClick={nextPage}>NEXT</button>
-
+      <button onClick={backHome}>Home</button>
     </div>
     
   );
