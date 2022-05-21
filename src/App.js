@@ -4,40 +4,45 @@ import React from "react"
 export default function App (){
 ////////////// STATE //////////////////
 
-    //Set state for currentUrl 
-    const [currentUrl , setCurrentUrl] = React.useState("?page=1")
-    //Set state for current page 
-    const [currentPage , setCurrenPage] = React.useState(1)
-    //Set state for the data 
+    //Set state for currentUrl to fetch API
+    const [currentUrl , setCurrentUrl] = React.useState(`https://gnikdroy.pythonanywhere.com/api/book/`)
+    //Set satate for navigation options next and prev page (from data.next and data.previous)
+    const [bookNavigation , setBookNavigation] = React.useState([])
+    //Set state for the books data 
   const [booksData , setBooksData] = React.useState([])
     // Set state for the Loading msg 
   const [isDataLoading , setIsDataLoading] = React.useState(true)
     // Set state for fetchError
   const [fetchError , setFetchError] = React.useState(null)
-    // Set state for search Input
-  const [searchInput , setSearchInput] = React.useState({search: ""})
+    // Set state for search Input and filter 
+  const [optionsInput , setOptionsInput] = React.useState({search: "" , language: ""})
   // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
   const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
   
+console.log(optionsInput);
+console.log(currentUrl)
+console.log(booksData);
+console.log(bookNavigation);
+
+
 
 /////////////////API CALL /////////////
 
- // Api  change URL of  the page number then useEffect will rerender if we will add dependency as a currentPage
- const API = `https://gnikdroy.pythonanywhere.com/api/book/${currentUrl}`
 
-
-// useEffect to fetch API and rerenders if currentPage will change .
+// useEffect to fetch API and rerenders if currentUrl will change .
 React.useEffect(()=>{
    
     const fetchBooks = async () =>{
       try{
-        const response = await fetch(API) ;
+        const response = await fetch(currentUrl) ;
         //if there is no response throw an error 
         if (!response.ok) throw Error("Did not recive any data");
         // 
         const data = await response.json();
         // set the state for BooksData 
         setBooksData(data.results);
+        // set data for next and prev page options
+        setBookNavigation(data)
         // set the FetchEroor 
         setFetchError(null);
         ;
@@ -48,29 +53,29 @@ React.useEffect(()=>{
       }
     }
     fetchBooks();
-  },[currentPage ,API])
+  },[currentUrl])
 
 
 ////////////// FUNCTIONS /////////////////
 
     // Function to move to next page 
 const nextPage = function (){
-    setCurrenPage(prevState => prevState +1)    
-    setCurrentUrl(`?page=${currentPage + 1}`)
+    // setCurrenPage(prevState => prevState +1)    
+    setCurrentUrl(bookNavigation.next)
 }
 
     //Function to move to prev page 
 const prevPage = function(){
-    if(currentPage<=1) return;
-    setCurrenPage(prevState => prevState -1)
-    setCurrentUrl(`?page=${currentPage  -1}`)
+    // if(currentPage<=1) return;
+    // setCurrenPage(prevState => prevState -1)
+    setCurrentUrl(bookNavigation.previous)
 }
 
 
 //Function to get search value from input
 const inputChange = function(event){
     const {name , value } = event.target
-    setSearchInput(prevState => {
+    setOptionsInput(prevState => {
         return{
         ...prevState,
             [name]: value
@@ -93,14 +98,6 @@ const addFavorites = function(data){
      const newFavoriteList = [...favorites , data ] 
      setFavorites(newFavoriteList) 
     }
-    
-   
-   
-   
-   
-  
-  
-  
 }
 
 // REMOVE MOVIE FROM FAVORITES 
@@ -123,10 +120,14 @@ localStorage.setItem("Favorites" , JSON.stringify(favorites))
 
 //Function to search for the query 
 const getSearch = function(){
-    setCurrentUrl(`?search=${searchInput.search}`)
+    setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book?search=${optionsInput.search}`)
 }
 
+// Function to filter language 
 
+const filterLang = function(){
+  setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/?languages=${optionsInput.language}`)
+}
 
 
 
@@ -138,12 +139,29 @@ return (
     <h1>hello</h1>
     <input 
     type="text" 
-    value={searchInput.search}
+    value={optionsInput.search}
     onChange={inputChange}
     name="search"
     >
+    {/* OPTIONS FOR LANGUAGE FILTER   */}
     </input>
     <button onClick={getSearch}>SEARCH</button>
+    <select
+    id = "language"
+    value = {optionsInput.language}
+    onChange={inputChange}
+    name = "language"
+    >
+    
+    <option value="en">EN</option>
+    <option value="pl">PL</option>
+    <option value="es">ES</option>
+    <option value="it">IT</option>
+    <option value="ru">RU</option>
+           
+
+    </select>
+    <button onClick={filterLang}>SUBMIT</button>
     {  isDataLoading &&
     <p> Loading Data ..... </p> }
     {fetchError && <p>{fetchError}</p>}
@@ -174,6 +192,7 @@ return (
     )}
     
     <button onClick={prevPage}>BACK</button>
+    <p>Pages :{bookNavigation.count} </p>
     <button onClick={nextPage}>NEXT</button>
 
     </div>
