@@ -21,7 +21,7 @@ export default function App (){
   
 // console.log(optionsInput);
 // console.log(currentUrl)
-// console.log(booksData);
+console.log(currentUrl);
 // console.log(bookNavigation);
 
 
@@ -172,6 +172,8 @@ return (
     {/* Check if the current id is already in favIDs if its not dispaly button  */}
     {!favIds.includes(data.id) && <button onClick={()=>addFavorites(data)}>Add Favorite</button>}
     <p >{data.title}</p> 
+    {/* //Map over data.agent and get data for person */}
+    <p >Writen by : {data.agents.map((data)=> data.person)}</p> 
     <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
     <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
     </a>
@@ -192,7 +194,7 @@ return (
     )}
     
     <button onClick={prevPage}>BACK</button>
-    <p>Books : {bookNavigation.count} </p>
+    <p>Page : {Math.round(bookNavigation.count / 10)} </p>
     <button onClick={nextPage}>NEXT</button>
       <button onClick={backHome}>Home</button>
     </div>
