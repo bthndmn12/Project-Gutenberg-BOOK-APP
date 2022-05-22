@@ -24,7 +24,7 @@ export default function App (){
   
 // console.log(optionsInput);
 // console.log(currentUrl)
-console.log(currentUrl);
+// console.log(currentUrl);
 // console.log(bookNavigation);
 
 
@@ -58,7 +58,7 @@ React.useEffect(()=>{
     fetchBooks();
   },[currentUrl])
 
-console.log(pageNumber);
+
 
 ////////////// FUNCTIONS /////////////////
 
@@ -86,13 +86,20 @@ const prevPage = function(){
 
 //Function to get search value from input
 const inputChange = function(event){
+  
     const {name , value } = event.target
     setOptionsInput(prevState => {
         return{
         ...prevState,
             [name]: value
     }
-    })}
+    })
+    // console.log(event.key)
+    // if(event.key === "Enter"){
+      
+    //   setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book?search=${optionsInput.search}`)
+    // }
+  }
 
 // ALL IDS of fav movies to check if the movie is already added to fav list .   
   const favIds = favorites.map(item => item.id)
@@ -128,7 +135,8 @@ const removeFavorites = function(data){
 
 
 //Function to search for the query 
-const getSearch = function(){
+const getSearch = function(event){
+  event.preventDefault();
     setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book?search=${optionsInput.search}`)
 }
 
@@ -151,16 +159,18 @@ return (
   onChange={inputChange}
   onClick={filterLang}
   />
-
+<form>
    <input 
    className="searchBar"
     type="text" 
     value={optionsInput.search}
     onChange={inputChange}
     name="search"
+    onSubmit={getSearch}
     >
     </input>
   <button onClick={getSearch}>SEARCH</button>
+  </form>
 </header>
   
     {  isDataLoading &&
