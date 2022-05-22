@@ -1,4 +1,5 @@
 import React from "react"
+import Navbar from "./Navbar"
 
 
 export default function App (){
@@ -18,6 +19,8 @@ export default function App (){
     const [optionsInput , setOptionsInput] = React.useState({search: "" , language: ""})
     // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
     const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
+    // set state for curren tage number 
+    const [pageNumber , setPageNumber] = React.useState(1)
   
 // console.log(optionsInput);
 // console.log(currentUrl)
@@ -55,24 +58,30 @@ React.useEffect(()=>{
     fetchBooks();
   },[currentUrl])
 
+console.log(pageNumber);
 
 ////////////// FUNCTIONS /////////////////
 
     // Function to move to next page 
 const nextPage = function (){
-    // setCurrenPage(prevState => prevState +1)    
+    //Get next page url
     setCurrentUrl(bookNavigation.next)
+    // Check current page number and set it to +1
+    setPageNumber(prevState => prevState + 1)
 }
 
     //Function to move to prev page 
 const prevPage = function(){
-    // if(currentPage<=1) return;
-    // setCurrenPage(prevState => prevState -1)
+    // Get prev page url
     setCurrentUrl(bookNavigation.previous)
+     // Check current page number and set it to +1
+     if(pageNumber <= 1) return;
+     setPageNumber(prevState => prevState - 1)
 }
     //Function to back to Home 
     const backHome = function(){
       setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/`)
+      setPageNumber(1)
     }
 
 //Function to get search value from input
@@ -135,33 +144,25 @@ const filterLang = function(){
 
 return (
     <div>
-      
-    <h1>hello</h1>
-    <input 
+{/* // Navbar with options to filter for language , and favorites list */}
+<header>
+  <Navbar
+  value = {optionsInput.language}
+  onChange={inputChange}
+  onClick={filterLang}
+  />
+
+   <input 
+   className="searchBar"
     type="text" 
     value={optionsInput.search}
     onChange={inputChange}
     name="search"
     >
-    {/* OPTIONS FOR LANGUAGE FILTER   */}
     </input>
-    <button onClick={getSearch}>SEARCH</button>
-    <select
-    id = "language"
-    value = {optionsInput.language}
-    onChange={inputChange}
-    name = "language"
-    >
-    
-    <option value="en">EN</option>
-    <option value="pl">PL</option>
-    <option value="es">ES</option>
-    <option value="it">IT</option>
-    <option value="ru">RU</option>
-           
-
-    </select>
-    <button onClick={filterLang}>SUBMIT</button>
+  <button onClick={getSearch}>SEARCH</button>
+</header>
+  
     {  isDataLoading &&
     <p> Loading Data ..... </p> }
     {fetchError && <p>{fetchError}</p>}
@@ -194,7 +195,7 @@ return (
     )}
     
     <button onClick={prevPage}>BACK</button>
-    <p>Page : {Math.round(bookNavigation.count / 10)} </p>
+    <p>Page :{pageNumber} / {Math.round(bookNavigation.count / 10)} </p>
     <button onClick={nextPage}>NEXT</button>
       <button onClick={backHome}>Home</button>
     </div>
