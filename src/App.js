@@ -1,4 +1,5 @@
 import React from "react"
+import BookCard from "./BookCard"
 import Navbar from "./Navbar"
 
 
@@ -94,11 +95,6 @@ const inputChange = function(event){
             [name]: value
     }
     })
-    // console.log(event.key)
-    // if(event.key === "Enter"){
-      
-    //   setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book?search=${optionsInput.search}`)
-    // }
   }
 
 // ALL IDS of fav movies to check if the movie is already added to fav list .   
@@ -136,6 +132,8 @@ const removeFavorites = function(data){
 
 //Function to search for the query 
 const getSearch = function(event){
+    
+  
   event.preventDefault();
     setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book?search=${optionsInput.search}`)
 }
@@ -147,49 +145,52 @@ const filterLang = function(){
 }
 
 
+console.log(booksData);
 
 
 
 return (
     <div>
-{/* // Navbar with options to filter for language , and favorites list */}
+{/* // Navbar with options to filter for language , favorites list , search bar */}
 <header>
   <Navbar
-  value = {optionsInput.language}
-  onChange={inputChange}
-  onClick={filterLang}
+  optionsValue = {optionsInput.language}
+  inputChange={inputChange}
+  filterLang={filterLang}
+  getSearch={getSearch}
+  searchValue={optionsInput.search}
   />
-<form>
-   <input 
-   className="searchBar"
-    type="text" 
-    value={optionsInput.search}
-    onChange={inputChange}
-    name="search"
-    onSubmit={getSearch}
-    >
-    </input>
-  <button onClick={getSearch}>SEARCH</button>
-  </form>
+
 </header>
-  
+  <div className="books__container">
     {  isDataLoading &&
     <p> Loading Data ..... </p> }
     {fetchError && <p>{fetchError}</p>}
-
     {booksData.map(data => 
-    // BOOK CARD COMPONENT
-    <div key={data.id}>
+    <BookCard
+    key={data.id}
+    data={data}
+    addFavorites={()=>addFavorites(data)}
+    removeFavorites={()=> removeFavorites(data)}
+    author={data.agents.map((data)=> data.person)}
+    favIds={favIds}
+    language={data.languages}
+    />)}
+  </div>
+
+    {/* {booksData.map(data =>  */}
+    {/* // BOOK CARD COMPONENT */}
+    {/* <div key={data.id}> */}
     {/* Check if the current id is already in favIDs if its not dispaly button  */}
-    {!favIds.includes(data.id) && <button onClick={()=>addFavorites(data)}>Add Favorite</button>}
-    <p >{data.title}</p> 
+    {/* {!favIds.includes(data.id) && <button onClick={()=>addFavorites(data)}>Add Favorite</button>}
+    <p >{data.title}</p>  */}
     {/* //Map over data.agent and get data for person */}
-    <p >Writen by : {data.agents.map((data)=> data.person)}</p> 
+    {/* <p >Writen by : {data.agents.map((data)=> data.person)}</p> 
     <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
     <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
     </a>
     </div>
-    )}
+    )} */}
 
     <h2>FAVORITES</h2>
     {/* FAVORITES */}

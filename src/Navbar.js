@@ -14,8 +14,8 @@ export default function Navbar(props){
                 
                     <select
                     id = "language"
-                    value = {props.value}
-                    onChange={props.onChange}
+                    value = {props.optionsValue}
+                    onChange={props.inputChange}
                     name = "language"
                     className='filter__select'
                     >
@@ -27,11 +27,31 @@ export default function Navbar(props){
                     </select>
                     <Icon 
                     icon="fa-solid:plus" 
-                    onClick={props.onClick}/>
+                    onClick={props.filterLang}/>
                     <Icon icon="fa:heart" />
                 
                 </div>
             </nav>
+                <form className="search__container"
+                onSubmit={(e)=>props.getSearch(e)}
+                >
+        
+                    <div className="searchbar__container">
+                    <input 
+                    className="searchBar"
+                    type="text" 
+                    value={props.searchValue}
+                    onChange={props.inputChange}
+                    name="search"
+                    placeholder="Search for Books"
+                    >
+                    </input>
+                    <Icon icon="fa:search"
+                    className='searchIcon' 
+                    onClick={props.getSearch}
+                    />
+                    </div>
+                </form>
             </div>
     )
 }
