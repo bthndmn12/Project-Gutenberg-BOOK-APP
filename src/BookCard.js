@@ -14,7 +14,7 @@ export default function BookCard(props){
             <div className="book__info">
                 <h2 className='book__title'>{props.data.title}</h2>
                 <h3 className='book__author'>Writen by: {props.author}</h3>
-                <p className='book__language'>Language: {props.language}</p>
+                {/* <p className='book__language'>Language: {props.language}</p> */}
             </div>
 
             <div className="buttons__container">
