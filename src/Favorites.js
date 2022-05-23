@@ -1,10 +1,9 @@
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react"
 
-
-
-export default function BookCard(props){
+export default function Favorites(props){
     return(
-        <div className="bookCard__container">
+        <div className="modal">
+       <div className="bookCard__container">
             <img 
             className='book__img'
             src={`https://www.gutenberg.org/cache/epub/${props.data.id}/pg${props.data.id}.cover.medium.jpg`} 
@@ -40,6 +39,9 @@ export default function BookCard(props){
            
           
             </div>
+        </div>
+        
+            
         </div>
     )
 }

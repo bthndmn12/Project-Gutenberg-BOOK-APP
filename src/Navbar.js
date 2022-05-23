@@ -28,7 +28,9 @@ export default function Navbar(props){
                     <Icon 
                     icon="fa-solid:plus" 
                     onClick={props.filterLang}/>
-                    <Icon icon="fa:heart" />
+                    <Icon icon="fa:heart"
+                    onClick={props.openModal}
+                    />
                 
                 </div>
             </nav>

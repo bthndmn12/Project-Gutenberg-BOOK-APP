@@ -1,7 +1,8 @@
 import React from "react"
 import BookCard from "./BookCard"
+import Favorites from "./Favorites"
 import Navbar from "./Navbar"
-
+import { Icon } from "@iconify/react"
 
 export default function App (){
 ////////////// STATE //////////////////
@@ -22,6 +23,8 @@ export default function App (){
     const [favorites , setFavorites] = React.useState(JSON.parse(localStorage.getItem("Favorites")) )
     // set state for curren tage number 
     const [pageNumber , setPageNumber] = React.useState(1)
+    //set state for open FavoritesModal 
+    const [isModalOpen , setIsModalOpen] = React.useState(false)
   
 // console.log(optionsInput);
 // console.log(currentUrl)
@@ -144,9 +147,13 @@ const filterLang = function(){
   setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/?languages=${optionsInput.language}`)
 }
 
+// Function to close and open modal 
+const modalToggle = function() {
+  setIsModalOpen(prevState => !prevState)
+}
 
-console.log(booksData);
 
+console.log(isModalOpen);
 
 
 return (
@@ -159,9 +166,11 @@ return (
   filterLang={filterLang}
   getSearch={getSearch}
   searchValue={optionsInput.search}
+  openModal={modalToggle}
   />
 
 </header>
+{/* BOOK CARDS  */}
   <div className="books__container">
     {  isDataLoading &&
     <p> Loading Data ..... </p> }
@@ -172,39 +181,40 @@ return (
     data={data}
     addFavorites={()=>addFavorites(data)}
     removeFavorites={()=> removeFavorites(data)}
-    author={data.agents.map((data)=> data.person)}
+    author={data.agents.map((data)=> `${data.person} `)}
     favIds={favIds}
     language={data.languages}
     />)}
   </div>
 
-    {/* {booksData.map(data =>  */}
-    {/* // BOOK CARD COMPONENT */}
-    {/* <div key={data.id}> */}
-    {/* Check if the current id is already in favIDs if its not dispaly button  */}
-    {/* {!favIds.includes(data.id) && <button onClick={()=>addFavorites(data)}>Add Favorite</button>}
-    <p >{data.title}</p>  */}
-    {/* //Map over data.agent and get data for person */}
-    {/* <p >Writen by : {data.agents.map((data)=> data.person)}</p> 
-    <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
-    <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
-    </a>
-    </div>
-    )} */}
+{/* MODAL WITH FAVORITES BOOKS */}
+   
+  {/* Condition to close and open modal  */}
+  <div className={!isModalOpen ? "modal__container" : " modal__container modal__container-open"}>
+  {/* Add hidden class to body to hide double scrollbar */}
+  {isModalOpen ? document.body.classList.add("hidden") :document.body.classList.remove("hidden") }
 
-    <h2>FAVORITES</h2>
-    {/* FAVORITES */}
-    {favorites.map(data => 
-    // BOOK CARD COMPONENT
-    <div key={data.id}>
-    <button onClick={ ()=> removeFavorites(data)}>Remove Favorite</button>
-    <p >{data.title}</p> 
-    <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
-    <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
-    </a>
-    </div>
+    <h1 className="favorites__title">Favorite Books</h1>
+    <Icon icon="icon-park-outline:close-one" 
+    onClick={modalToggle}
+    />
+    {favorites.map(data =>
+        <Favorites
+        key={data.id}
+        data={data}
+        addFavorites={()=>addFavorites(data)}
+        removeFavorites={()=> removeFavorites(data)}
+        author={data.agents.map((data)=> `${data.person} `)}
+        favIds={favIds}
+        language={data.languages}
+        />
     )}
-    
+  </div> 
+
+   
+   
+  
+  {/* BOTTOM NAVIGATION */}
     <button onClick={prevPage}>BACK</button>
     <p>Page :{pageNumber} / {Math.round(bookNavigation.count / 10)} </p>
     <button onClick={nextPage}>NEXT</button>
@@ -213,3 +223,12 @@ return (
     
   );
 }
+
+
+ // <div key={data.id}>
+    // <button onClick={ ()=> removeFavorites(data)}>Remove Favorite</button>
+    // <p >{data.title}</p> 
+    // <a href={`https://www.gutenberg.org/files/${data.id}/${data.id}-h/${data.id}-h.htm`}>
+    // <img src={`https://www.gutenberg.org/cache/epub/${data.id}/pg${data.id}.cover.medium.jpg`} alt={data.title}></img>
+    // </a>
+    // </div>
