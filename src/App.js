@@ -253,8 +253,14 @@ export default function App() {
           />
         </div>
         <p className="page__number-txt">
-          <span className="page__span">Page :</span> {pageNumber} /{" "}
-          {Math.round(bookNavigation.count / 10)}{" "}
+          {!bookNavigation.count ? (
+            <p>Loading</p>
+          ) : (
+            <p>
+              <span className="page__span">Page :</span> {pageNumber} /{" "}
+              {Math.round(bookNavigation.count / 10)}
+            </p>
+          )}
         </p>
         <div className="bottom__nav-left">
           <Icon
