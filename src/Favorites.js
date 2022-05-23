@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 
 export default function Favorites(props){
     return(
-        <div className="modal">
+        
        <div className="bookCard__container">
             <img 
             className='book__img'
@@ -39,7 +39,7 @@ export default function Favorites(props){
            
           
             </div>
-        </div>
+        
         
             
         </div>
