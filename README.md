@@ -22,6 +22,6 @@
 - Figma design
 - CSS styles
 
-# This project is live HERE
+# This project is live <a href="https://gutenberg-app.netlify.app">HERE</a>
 
 - 📫 Find me on <a href="https://marcin-zygan.com">marcin-zygan.com</a>
