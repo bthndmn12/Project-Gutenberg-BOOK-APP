@@ -27,7 +27,7 @@ export default function App() {
   });
   // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
   const [favorites, setFavorites] = React.useState(
-    JSON.parse(localStorage.getItem("Favorites") || [])
+    JSON.parse(localStorage.getItem("Favorites") || "")
   );
   // SAVE AND REMOVE FAVORITES TO LOCAL STORAGE
   // save and remove items to local storage everytime favorites array changes
