@@ -29,6 +29,12 @@ export default function App() {
   const [favorites, setFavorites] = React.useState(
     JSON.parse(localStorage.getItem("Favorites"))
   );
+  // SAVE AND REMOVE FAVORITES TO LOCAL STORAGE
+  // save and remove items to local storage everytime favorites array changes
+  React.useEffect(() => {
+    localStorage.setItem("Favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
   // set state for curren tage number
   const [pageNumber, setPageNumber] = React.useState(1);
   //set state for open FavoritesModal
@@ -133,12 +139,6 @@ export default function App() {
     // Set favorites list to our newFaroite list after filter
     setFavorites(newFavoriteList);
   };
-
-  // SAVE AND REMOVE FAVORITES TO LOCAL STORAGE
-  // save and remove items to local storage everytime favorites array changes
-  React.useEffect(() => {
-    localStorage.setItem("Favorites", JSON.stringify(favorites));
-  }, [favorites]);
 
   //Function to search for the query
   const getSearch = function (event) {
