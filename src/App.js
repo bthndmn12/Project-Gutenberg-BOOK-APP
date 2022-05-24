@@ -117,7 +117,10 @@ export default function App() {
   };
 
   // ALL IDS of fav movies to check if the movie is already added to fav list .
-  const favIds = favorites.map((item) => item.id);
+  const favIds = favorites.map((item) => {
+    if (null) return;
+    else return item.id;
+  });
 
   // ADD MOVIE TO FAVORITES
   const addFavorites = function (data) {
