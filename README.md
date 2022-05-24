@@ -1,12 +1,12 @@
 # Project Gutenberg Book App
 
 - About this project :
-  This project was done as a part of recruitment task .
-  This project is using:
-  Project Gutenberg API
-  A RESTful API to access the entire Project Gutenberg catalogue.
-  <a href="https://gnikdroy.pythonanywhere.com/docs/#installation-and-setup">About API</a>
-  Project Gutenberg official<a href="https://www.gutenberg.org">website</a>
+  - This project was done as a part of recruitment task .
+  - This project is using:
+  - Project Gutenberg API
+  - A RESTful API to access the entire Project Gutenberg catalogue.
+  - <a href="https://gnikdroy.pythonanywhere.com/docs/#installation-and-setup">About API</a>
+  - Project Gutenberg official <a href="https://www.gutenberg.org">website</a>
 
 # What have I done + Features added :
 
