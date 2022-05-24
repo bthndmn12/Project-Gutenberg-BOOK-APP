@@ -39,8 +39,6 @@ export default function App() {
   // console.log(currentUrl);
   // console.log(bookNavigation);
 
-  console.log(lastPage);
-
   /////////////////API CALL /////////////
 
   // useEffect to fetch API and rerenders if currentUrl will change .
@@ -78,8 +76,6 @@ export default function App() {
     setPageNumber((prevState) => prevState + 1);
   };
 
-  console.log(currentUrl);
-
   //FUNCTION to move to prev page
   const prevPage = function () {
     // Check current page number and set it to +1
@@ -94,7 +90,7 @@ export default function App() {
     setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/`);
     setPageNumber(1);
   };
-  console.log(optionsInput.language);
+
   //FUNCTION to go to last page
   const goToLastPage = function () {
     setCurrentUrl(
@@ -169,8 +165,6 @@ export default function App() {
   const modalToggle = function () {
     setIsModalOpen((prevState) => !prevState);
   };
-
-  console.log(isModalOpen);
 
   return (
     <div>
@@ -252,7 +246,7 @@ export default function App() {
             onClick={prevPage}
           />
         </div>
-        <p className="page__number-txt">
+        <div className="page__number-txt">
           {!bookNavigation.count ? (
             <p>Loading</p>
           ) : (
@@ -261,7 +255,7 @@ export default function App() {
               {Math.round(bookNavigation.count / 10)}
             </p>
           )}
-        </p>
+        </div>
         <div className="bottom__nav-left">
           <Icon
             className="bottom__nav-icon"
