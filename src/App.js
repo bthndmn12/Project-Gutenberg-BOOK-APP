@@ -39,7 +39,7 @@ export default function App() {
     localStorage.setItem("Favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // set state for curren tage number
+  // set state for current page number
   const [pageNumber, setPageNumber] = React.useState(1);
   //set state for open FavoritesModal
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -88,11 +88,10 @@ export default function App() {
 
   //FUNCTION to move to prev page
   const prevPage = function () {
-    // Check current page number and set it to +1
     if (pageNumber <= 1) return;
     // Get prev page url
     setCurrentUrl(bookNavigation.previous);
-
+    // Check current page number and set it to -1
     setPageNumber((prevState) => prevState - 1);
   };
   //FUNCTION to back to Home
@@ -120,10 +119,10 @@ export default function App() {
     });
   };
 
-  // ALL IDS of fav movies to check if the movie is already added to fav list .
+  // ALL IDS of fav books to check if the book is already added to fav list .
   const favIds = favorites.map((item) => item.id);
 
-  // ADD MOVIE TO FAVORITES
+  // ADD BOOK TO FAVORITES
   const addFavorites = function (data) {
     // Create copy of current favorites array and add the curent book to it
     // const favIds = favorites.map(item => item.id)
@@ -135,7 +134,7 @@ export default function App() {
     }
   };
 
-  // REMOVE MOVIE FROM FAVORITES
+  // REMOVE BOOK FROM FAVORITES
   const removeFavorites = function (data) {
     //Create the newFavoriteList , filter favorites array and remove item that will return false
     // item.id === data.id is true so all other items won't be removed
