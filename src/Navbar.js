@@ -8,23 +8,8 @@ export default function Navbar(props){
             <nav className="nav">
                 <div className="heading">
                 <h1>Project Gutenberg</h1>
-                <h3>Free E-books click away !</h3>
                 </div>
                 <div className="filter__container">
-                
-                    <select
-                    id = "language"
-                    value = {props.optionsValue}
-                    onChange={props.inputChange}
-                    name = "language"
-                    className='filter__select'
-                    >
-                    <option value="en">EN</option>
-                    <option value="pl">PL</option>
-                    <option value="es">ES</option>
-                    <option value="it">IT</option>
-                    <option value="ru">RU</option>
-                    </select>
                     <Icon 
                     icon="fa-solid:plus" 
                     onClick={props.filterLang}/>
@@ -45,7 +30,7 @@ export default function Navbar(props){
                     value={props.searchValue}
                     onChange={props.inputChange}
                     name="search"
-                    placeholder="Search for Books"
+                    placeholder="Kitaplarda Arayın!"
                     >
                     </input>
                     <Icon icon="fa:search"

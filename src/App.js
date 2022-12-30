@@ -8,24 +8,23 @@ import Footer from "./Footer";
 export default function App() {
   ////////////// STATE //////////////////
 
-  //Set state for currentUrl to fetch API
+  //API'yi getirmek için geçerli URL'nin state'i ayarla
   const [currentUrl, setCurrentUrl] = React.useState(
     `https://gnikdroy.pythonanywhere.com/api/book/`
   );
-  //Set satate for navigation options next and prev page (from data.next and data.previous)
+  //Sonraki ve önceki sayfada gezinme seçenekleri için state'i ayarla (data.next ve data.previous)
   const [bookNavigation, setBookNavigation] = React.useState([]);
-  //Set state for the books data
+  //Kitap verileri için state'i ayarla
   const [booksData, setBooksData] = React.useState([]);
-  // Set state for the Loading msg
+  //Yükleniyor mesajı için state'i ayarla
   const [isDataLoading, setIsDataLoading] = React.useState(true);
-  // Set state for fetchError
   const [fetchError, setFetchError] = React.useState(null);
-  // Set state for search Input and filter
+  // fetchError için state'i ayarla
   const [optionsInput, setOptionsInput] = React.useState({
     search: "",
     language: "",
   });
-  // Set state for favorites and LOAD ITEMS FROM LOCAL STORAGE
+  // Sık kullanılanlar için state'i ayarlayın ve YEREL DEPODAN ÖĞELERİ YÜKLE
   const [favorites, setFavorites] = React.useState([]);
   React.useEffect(() => {
     try {
@@ -33,15 +32,15 @@ export default function App() {
       setFavorites(favorites);
     } catch (e) {}
   }, []);
-  // SAVE AND REMOVE FAVORITES TO LOCAL STORAGE
-  // save and remove items to local storage everytime favorites array changes
+// FAVORİLERİ KAYDEDİN VE YEREL DEPOYA KALDIRIN
+// sık kullanılanlar dizisi her değiştiğinde öğeleri yerel depolamaya kaydedin ve kaldırın
   React.useEffect(() => {
     localStorage.setItem("Favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // set state for current page number
+  // geçerli sayfa numarası için state'i ayarla
   const [pageNumber, setPageNumber] = React.useState(1);
-  //set state for open FavoritesModal
+  //açık Sık Kullanılanlar Modu için state'i ayarla
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const lastPage = Math.round(bookNavigation.count / 10);
   // console.log(optionsInput);
@@ -51,20 +50,20 @@ export default function App() {
 
   /////////////////API CALL /////////////
 
-  // useEffect to fetch API and rerenders if currentUrl will change .
+  // API'yi getirmek için Effect'i kullanın ve currentUrl değişecekse yeniden işleyin.
   React.useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await fetch(currentUrl);
-        //if there is no response throw an error
+        //yanıt yoksa bir hata atın
         if (!response.ok) throw Error("Did not recive any data");
         //
         const data = await response.json();
-        // set the state for BooksData
+        // BooksData için state'i ayarla
         setBooksData(data.results);
-        // set data for next and prev page options
+        // sonraki ve önceki sayfa seçenekleri için verileri ayarla
         setBookNavigation(data);
-        // set the FetchEroor
+        // FetchEroor'u ayarla
         setFetchError(null);
       } catch (err) {
         setFetchError(err.message);
@@ -77,30 +76,30 @@ export default function App() {
 
   ////////////// FUNCTIONS /////////////////
 
-  // Function to move to next page
+  // Sonraki sayfaya geçme işlevi
   const nextPage = function () {
     if (pageNumber === lastPage) return;
-    //Get next page url
+    //Sonraki sayfa url'sini al
     setCurrentUrl(bookNavigation.next);
-    // Check current page number and set it to +1
+    // Geçerli sayfa numarasını kontrol edin ve +1 olarak ayarlayın
     setPageNumber((prevState) => prevState + 1);
   };
 
-  //FUNCTION to move to prev page
+  //önceki sayfaya gitmek için
   const prevPage = function () {
     if (pageNumber <= 1) return;
-    // Get prev page url
+    // Önceki sayfa url'sini al
     setCurrentUrl(bookNavigation.previous);
-    // Check current page number and set it to -1
+    // Geçerli sayfa numarasını kontrol edin ve -1 olarak ayarlayın
     setPageNumber((prevState) => prevState - 1);
   };
-  //FUNCTION to back to Home
+  //Ana Sayfaya dönmek için FONKSİYON
   const backHome = function () {
     setCurrentUrl(`https://gnikdroy.pythonanywhere.com/api/book/`);
     setPageNumber(1);
   };
 
-  //FUNCTION to go to last page
+  //Son sayfaya gitmek için FONKSİYON
   const goToLastPage = function () {
     setCurrentUrl(
       `https://gnikdroy.pythonanywhere.com/api/book/?search=${optionsInput.search}&languages=${optionsInput.language}&page=${lastPage}`
@@ -108,7 +107,7 @@ export default function App() {
 
     setPageNumber(lastPage);
   };
-  //FUNCTION to get search value from input
+  //Girişten arama değeri almak için FONKSİYON
   const inputChange = function (event) {
     const { name, value } = event.target;
     setOptionsInput((prevState) => {
@@ -119,12 +118,12 @@ export default function App() {
     });
   };
 
-  // ALL IDS of fav books to check if the book is already added to fav list .
+  // Kitabın zaten favori listesine eklenip eklenmediğini kontrol etmek için favori kitapların TÜM Kimlikleri.
   const favIds = favorites.map((item) => item.id);
 
-  // ADD BOOK TO FAVORITES
+  // KİTABI FAVORİLERE EKLE
   const addFavorites = function (data) {
-    // Create copy of current favorites array and add the curent book to it
+    // Mevcut sık kullanılanlar dizisinin bir kopyasını oluşturun ve mevcut kitabı buna ekleyin
     // const favIds = favorites.map(item => item.id)
     if (favIds.includes(data.id)) {
       return;
@@ -134,16 +133,15 @@ export default function App() {
     }
   };
 
-  // REMOVE BOOK FROM FAVORITES
+  // KİTABI FAVORİLERDEN ÇIKAR
   const removeFavorites = function (data) {
-    //Create the newFavoriteList , filter favorites array and remove item that will return false
-    // item.id === data.id is true so all other items won't be removed
+    //newFavoriteList oluşturun, favoriler dizisini filtreleyin ve false döndürecek öğeyi kaldırın
     const newFavoriteList = favorites.filter((item) => item.id !== data.id);
-    // Set favorites list to our newFaroite list after filter
+    // Favoriler listesini, filtreden sonra yeni Favoriler listemize ayarlayın
     setFavorites(newFavoriteList);
   };
 
-  //Function to search for the query
+  //Sorguyu arama işlevi
   const getSearch = function (event) {
     event.preventDefault();
     setCurrentUrl(
@@ -219,7 +217,7 @@ export default function App() {
           className="modal__close-icon"
           onClick={modalToggle}
         />
-        <h1 className="favorites__title">Favorite Books</h1>
+        <h1 className="favorites__title">Favorilerim</h1>
         <div className="modal">
           {favorites.map((data) => (
             <Favorites
@@ -254,7 +252,7 @@ export default function App() {
             <p>Loading</p>
           ) : (
             <p>
-              <span className="page__span">Page :</span> {pageNumber} /{" "}
+              <span className="page__span">Sayfa :</span> {pageNumber} /{" "}
               {Math.round(bookNavigation.count / 10)}
             </p>
           )}

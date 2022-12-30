@@ -13,21 +13,21 @@ export default function BookCard(props){
 
             <div className="book__info">
                 <h2 className='book__title'>{props.data.title}</h2>
-                <h3 className='book__author'>Writen by: {props.author}</h3>
-                <p className='book__language'>Language: {props.language}</p>
+                <h3 className='book__author'>Yazar: {props.author}</h3>
+                <p className='book__language'>Dil: {props.language}</p>
             </div>
 
             <div className="buttons__container">
             <a 
             className='readBook__btn'
             href={`https://www.gutenberg.org/files/${props.data.id}/${props.data.id}-h/${props.data.id}-h.htm`}> 
-            <span className='btn__txt'>Read Book</span>
+            <span className='btn__txt'>Oku</span>
             <Icon 
             className='book__iconBtn'
             icon="fa6-solid:book-open" />
             </a>
 
-            {/* Conditionally renders buttons to add to favorites if already in favorites render button to remove from favorites */}
+     
             {!props.favIds.includes(props.data.id) ?  
             <Icon icon="fa6-solid:heart-circle-plus" 
             className='book__icon'
